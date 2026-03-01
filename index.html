@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Homemade HD Projector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111214;
+      --panel: #16181c;
+      --border: #2a2d35;
+      --amber: #f5a623;
+      --amber-dim: #c47d0e;
+      --amber-glow: rgba(245, 166, 35, 0.15);
+      --white: #f0ece4;
+      --muted: #7a7d85;
+      --text: #ccc9be;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 8vw;
+      overflow: hidden;
+    }
+
+    .hero-beam {
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 55vw;
+      height: 120vh;
+      background: conic-gradient(from 200deg at 90% 20%, transparent 0deg, rgba(245,166,35,0.07) 15deg, rgba(245,166,35,0.18) 25deg, rgba(245,166,35,0.07) 38deg, transparent 55deg);
+      pointer-events: none;
+      animation: beam-flicker 6s ease-in-out infinite;
+    }
+
+    @keyframes beam-flicker {
+      0%, 100% { opacity: 1; }
+      45% { opacity: 0.85; }
+      50% { opacity: 0.95; }
+      55% { opacity: 0.8; }
+    }
+
+    .hero-dot {
+      position: absolute;
+      top: 18%;
+      right: 14%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 12px rgba(245,166,35,0.1), 0 0 0 30px rgba(245,166,35,0.04), 0 0 60px 20px rgba(245,166,35,0.2);
+      animation: pulse-dot 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 12px rgba(245,166,35,0.1), 0 0 0 30px rgba(245,166,35,0.04), 0 0 60px 20px rgba(245,166,35,0.2); }
+      50% { transform: scale(1.2); box-shadow: 0 0 0 18px rgba(245,166,35,0.12), 0 0 0 45px rgba(245,166,35,0.05), 0 0 90px 30px rgba(245,166,35,0.25); }
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 13vw, 11rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 0.2em;
+      opacity: 0;
+      animation: fade-up 0.8s 0.4s forwards;
+    }
+
+    .hero h1 span {
+      color: var(--amber);
+      display: block;
+    }
+
+    .hero-desc {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-top: 2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.6s forwards;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.8s forwards;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .meta-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fade-up 0.8s 1.2s forwards;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--amber);
+      animation: slide-line 2s 1.5s ease-in-out infinite;
+    }
+
+    @keyframes slide-line {
+      0% { left: -100%; }
+      50% { left: 0%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 8rem 8vw;
+      position: relative;
+    }
+
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .how-card {
+      background: var(--panel);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .how-card:hover {
+      background: #1c1f26;
+    }
+
+    .how-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--border);
+      margin-bottom: 1rem;
+      transition: color 0.3s;
+    }
+
+    .how-card:hover .how-num {
+      color: var(--amber-dim);
+    }
+
+    .how-card h3 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .how-card p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── BUILD STEPS ── */
+    .steps {
+      background: var(--black);
+    }
+
+    .steps-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .step {
+      padding: 2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transition: background 0.25s;
+      cursor: default;
+    }
+
+    .step:hover {
+      background: var(--amber-glow);
+    }
+
+    .step:nth-child(even) {
+      border-right: none;
+    }
+
+    .step-index {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      margin-top: 0.2rem;
+      flex-shrink: 0;
+    }
+
+    .step-text h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .step-text p {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ── COMPONENTS ── */
+    .components {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .comp-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .comp-item:hover {
+      border-color: var(--amber-dim);
+      transform: translateY(-3px);
+    }
+
+    .comp-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--amber);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+
+    .comp-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .comp-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .comp-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .comp-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── RESULTS ── */
+    .results {
+      background: var(--black);
+    }
+
+    .results-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .result-block {
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      background: var(--panel);
+    }
+
+    .result-block h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .result-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .result-list li {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .result-list li .icon {
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .icon-ok { color: #4caf7d; }
+    .icon-warn { color: var(--amber); }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .specs-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .specs-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .specs-table td {
+      padding: 0.8rem 0;
+      font-size: 0.82rem;
+    }
+
+    .specs-table td:first-child {
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      width: 40%;
+    }
+
+    .specs-table td:last-child {
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 4rem 8vw;
+      border-top: 1px solid var(--border);
+      background: var(--dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-brand span { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--amber); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--muted);
+      width: 100%;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .steps-list { grid-template-columns: 1fr; }
+      .step { border-right: none; }
+      .results-inner { grid-template-columns: 1fr; }
+      .hero-dot { display: none; }
+      .hero-beam { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-beam"></div>
+    <div class="hero-dot"></div>
+    <div class="hero-label">DIY Build · April 2015</div>
+    <h1>Homemade<span>HD Projector</span></h1>
+    <p class="hero-desc">
+      A fully hand-built HD projector — custom enclosure, precision optics, LCD panel integration, and active thermal management. Built from scratch and capable of projecting full movies in a dark room.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Type</span>
+        <span class="meta-value">LCD Projector</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Build Time</span>
+        <span class="meta-value">DIY</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value" style="color: var(--amber);">Working ✓</span>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span class="scroll-line"></span>
+      Scroll to explore
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="section-tag">Principle</div>
+    <h2 class="section-title">How It Works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h3>Light Source</h3>
+        <p>A high-brightness lamp generates a powerful, focused beam of white light inside the enclosure.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h3>LCD Panel</h3>
+        <p>Light passes through an LCD screen which acts as the "slide" — displaying the image frame by frame.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h3>Projection Lens</h3>
+        <p>A convex lens magnifies the image from the LCD and projects it onto a wall or screen at distance.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <h3>Thermal Control</h3>
+        <p>Filtered intake fans and an exhaust system keep the unit cool, preventing heat damage to components.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD STEPS -->
+  <section class="steps">
+    <div class="section-tag">Process</div>
+    <h2 class="section-title">Build Process</h2>
+    <div class="steps-list">
+      <div class="step">
+        <span class="step-index">01</span>
+        <div class="step-text">
+          <h4>Planning</h4>
+          <p>Designed the internal layout and marked slates for precise cutting.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">02</span>
+        <div class="step-text">
+          <h4>Enclosure</h4>
+          <p>Cut and assembled the custom housing box from marked slates.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">03</span>
+        <div class="step-text">
+          <h4>Lens Fitting</h4>
+          <p>Mounted and positioned the projection lens in the front of the enclosure.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">04</span>
+        <div class="step-text">
+          <h4>Foundation</h4>
+          <p>Built the internal structural base to hold all components securely.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">05</span>
+        <div class="step-text">
+          <h4>Electricals & Exhaust</h4>
+          <p>Installed wiring, power routing, and the ventilation exhaust outlet.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">06</span>
+        <div class="step-text">
+          <h4>Light Source Wiring</h4>
+          <p>Wired up the high-brightness lamp with proper connections and safety.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">07</span>
+        <div class="step-text">
+          <h4>Optics Alignment</h4>
+          <p>Fine-tuned the lamp and lens positions for optimal image clarity and brightness.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">08</span>
+        <div class="step-text">
+          <h4>LCD Screen</h4>
+          <p>Fitted the display panel into the enclosure in the optical path.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">09</span>
+        <div class="step-text">
+          <h4>Air Intake Filter</h4>
+          <p>Added a filtered intake to keep dust out while allowing airflow.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">10</span>
+        <div class="step-text">
+          <h4>Temperature Control</h4>
+          <p>Implemented a thermal management system to monitor and manage heat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section class="components">
+    <div class="section-tag">Materials</div>
+    <h2 class="section-title">Components</h2>
+    <div class="comp-grid">
+      <div class="comp-item">
+        <div class="comp-icon">💡</div>
+        <div class="comp-name">Light Source</div>
+        <div class="comp-desc">High-brightness lamp powering the optical path</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🖥️</div>
+        <div class="comp-name">LCD Panel</div>
+        <div class="comp-desc">Display screen acting as the image source</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🔭</div>
+        <div class="comp-name">Projection Lens</div>
+        <div class="comp-desc">Convex lens to magnify and project the image</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🌬️</div>
+        <div class="comp-name">Ventilation Fans</div>
+        <div class="comp-desc">Intake and exhaust fans for active cooling</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🧹</div>
+        <div class="comp-name">Air Filter</div>
+        <div class="comp-desc">Keeps dust out of the optical components</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🌡️</div>
+        <div class="comp-name">Temp. Control</div>
+        <div class="comp-desc">Thermal management module for safe operation</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">🗃️</div>
+        <div class="comp-name">Custom Enclosure</div>
+        <div class="comp-desc">Hand-cut and assembled housing box</div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-icon">⚡</div>
+        <div class="comp-name">Wiring & Electricals</div>
+        <div class="comp-desc">Power routing and electrical components</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results">
+    <div class="section-tag">Outcome</div>
+    <h2 class="section-title">Results</h2>
+    <div class="results-inner">
+      <div class="result-block">
+        <h3>Performance</h3>
+        <ul class="result-list">
+          <li><span class="icon icon-ok">✔</span> Clear projected image in dark conditions</li>
+          <li><span class="icon icon-ok">✔</span> Good color reproduction across the spectrum</li>
+          <li><span class="icon icon-ok">✔</span> Thermal system prevents overheating</li>
+          <li><span class="icon icon-ok">✔</span> Successfully projected full movies</li>
+          <li><span class="icon icon-warn">⚠</span> Light leakage visible in bright daylight — best used in dark rooms</li>
+        </ul>
+      </div>
+      <div class="result-block">
+        <h3>Specs</h3>
+        <table class="specs-table">
+          <tr><td>Type</td><td>LCD Projector</td></tr>
+          <tr><td>Best Use</td><td>Dark / Low-light rooms</td></tr>
+          <tr><td>Cooling</td><td>Active (fans + filter)</td></tr>
+          <tr><td>Enclosure</td><td>Custom-built, painted</td></tr>
+          <tr><td>Input</td><td>LCD panel signal</td></tr>
+          <tr><td>Built</td><td>April 2015</td></tr>
+          <tr><td>Author</td><td>B</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">HD <span>Projector</span></div>
+    <div class="footer-links">
+      <a href="https://fewinsights123.blogspot.com/2015/04/homemade-hd-projector.html" target="_blank">Blog Post</a>
+      <a href="https://github.com" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-copy">Built by hand. Documented with care. &copy; 2015 B — few insights.</div>
+  </footer>
+
+</body>
+</html>
