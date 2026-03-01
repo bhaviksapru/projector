@@ -1,8 +1,8 @@
 # Homemade HD Projector
 
-Built this back in 2015. The idea was simple — why spend thousands on a commercial projector when you can build one that throws a 152-inch image for a fraction of the cost? Took a while to get right, but it works.
+Built this back in 2015.
 
-🌐 **[View the project page](https://yourusername.github.io/your-repo-name)**
+🌐 **[View the project page](https://bhaviksapru.github.io/projector/)**
 
 ---
 
@@ -16,7 +16,9 @@ Projected onto a 152-inch diagonal screen at 14 feet. Looks great in a dark room
 
 ## The optics
 
-The optical path was the hardest part to figure out. Everything has to line up precisely or you get a dim, blurry mess.
+The optical path was the hardest part to figure out. The antique cooke triplet was sourced from an antique supplier in washington. These were made during WorldWarII. Lens with similar specifications are available today but are prohibitively expensive. 
+Remaining items were sourced locally or from china.
+Everything has to line up precisely or you get a dim, blurry mess.
 
 | Component | Spec |
 |---|---|
@@ -50,7 +52,7 @@ Nothing fancy here — just planning, cutting, assembling, and a lot of iteratin
 
 ## How it performs
 
-Works well in a dark room. Colors are good, image is sharp once the optics are dialled in. There's some light leakage during the day but that's mostly a sealing issue — easy enough to fix with some foam tape around the edges.
+Works well in a dark room. Colors are good, image is sharp once the optics are dialled in. There's some light leakage during the day but that's mostly a sealing issue — easy enough to fix with heavy curtains in all of the windows.
 
 The 400W lamp runs hot, so the cooling system matters. The filtered intake + exhaust setup keeps things stable.
 
@@ -58,16 +60,16 @@ The 400W lamp runs hot, so the cooling system matters. The filtered intake + exh
 
 ## Notes
 
-- The Cooke triplet was a lucky find. Any decent projection lens with a similar focal length would work
 - Getting the collimator distance right relative to the reflector took the most trial and error
 - The LCD panel needs its backlight removed — the projector lamp replaces it
 - UV and IR filters are important; without them the lamp will degrade the LCD over time
+- Image is double inverted. (hence correct on screen)
 
 ---
 
 ## Photos
 
-All build photos are documented on the [project page](https://yourusername.github.io/your-repo-name) and the original [blog post](https://fewinsights123.blogspot.com/2015/04/homemade-hd-projector.html).
+All build photos are documented on the [project page](https://bhaviksapru.github.io/projector/) and the original [blog post](https://fewinsights123.blogspot.com/2015/04/homemade-hd-projector.html).
 
 ---
 
