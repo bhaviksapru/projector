@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="author" content="Bhavik Sapru">
+  <meta name="description" content="Homemade HD Projector by Bhavik Sapru — 400W metal halide lamp, antique Cooke triplet lens, 152-inch DIY LCD projector built in 2015.">
+  <meta name="robots" content="index, follow">
+  <title>Homemade HD Projector — Bhavik Sapru</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         content="https://bhaviksapru.github.io/projector/">
+  <meta property="og:title"       content="Homemade HD Projector — Bhavik Sapru">
+  <meta property="og:description" content="400W metal halide lamp, antique Cooke triplet lens, 17-inch Dell LCD. Projected onto 152 inches at 14 feet.">
+  <meta property="og:site_name"   content="Bhavik Sapru">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="Homemade HD Projector — Bhavik Sapru">
+  <meta name="twitter:description" content="Hand-built HD projector using a 400W metal halide lamp and antique Cooke triplet lens.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://bhaviksapru.github.io/projector/">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Homemade HD Projector",
+    "author": {
+      "@type": "Person",
+      "name": "Bhavik Sapru",
+      "url": "https://bhaviksapru.github.io/"
+    },
+    "description": "A hand-built HD projector using a 400W metal halide lamp, antique Cooke triplet lens, and a 17-inch Dell LCD panel, capable of projecting at 152 inches.",
+    "dateCreated": "2015-04",
+    "url": "https://bhaviksapru.github.io/projector/",
+    "codeRepository": "https://github.com/bhaviksapru/projector"
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111214;
+      --panel: #16181c;
+      --border: #2a2d35;
+      --amber: #f5a623;
+      --amber-dim: #c47d0e;
+      --amber-glow: rgba(245, 166, 35, 0.15);
+      --white: #f0ece4;
+      --muted: #7a7d85;
+      --text: #ccc9be;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .portfolio-back {
+      position: fixed;
+      top: 1.3rem;
+      left: 6vw;
+      z-index: 1000;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(122, 125, 133, 0.55);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .portfolio-back:hover { color: var(--amber); }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 8vw;
+      overflow: hidden;
+    }
+
+    .hero-beam {
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 55vw;
+      height: 120vh;
+      background: conic-gradient(from 200deg at 90% 20%, transparent 0deg, rgba(245,166,35,0.07) 15deg, rgba(245,166,35,0.18) 25deg, rgba(245,166,35,0.07) 38deg, transparent 55deg);
+      pointer-events: none;
+      animation: beam-flicker 6s ease-in-out infinite;
+    }
+
+    @keyframes beam-flicker {
+      0%, 100% { opacity: 1; }
+      45% { opacity: 0.85; }
+      50% { opacity: 0.95; }
+      55% { opacity: 0.8; }
+    }
+
+    .hero-dot {
+      position: absolute;
+      top: 18%;
+      right: 14%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 12px rgba(245,166,35,0.1), 0 0 0 30px rgba(245,166,35,0.04), 0 0 60px 20px rgba(245,166,35,0.2);
+      animation: pulse-dot 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 12px rgba(245,166,35,0.1), 0 0 0 30px rgba(245,166,35,0.04), 0 0 60px 20px rgba(245,166,35,0.2); }
+      50% { transform: scale(1.2); box-shadow: 0 0 0 18px rgba(245,166,35,0.12), 0 0 0 45px rgba(245,166,35,0.05), 0 0 90px 30px rgba(245,166,35,0.25); }
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 13vw, 11rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 0.2em;
+      opacity: 0;
+      animation: fade-up 0.8s 0.4s forwards;
+    }
+
+    .hero h1 span {
+      color: var(--amber);
+      display: block;
+    }
+
+    .hero-desc {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-top: 2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.6s forwards;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.8s forwards;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .meta-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fade-up 0.8s 1.2s forwards;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--amber);
+      animation: slide-line 2s 1.5s ease-in-out infinite;
+    }
+
+    @keyframes slide-line {
+      0% { left: -100%; }
+      50% { left: 0%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      padding: 8rem 8vw;
+      position: relative;
+    }
+
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    .how {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .how-card {
+      background: var(--panel);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .how-card:hover { background: #1c1f26; }
+
+    .how-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--border);
+      margin-bottom: 1rem;
+      transition: color 0.3s;
+    }
+
+    .how-card:hover .how-num { color: var(--amber-dim); }
+
+    .how-card h3 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .how-card p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .steps { background: var(--black); }
+
+    .steps-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .step {
+      padding: 2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transition: background 0.25s;
+      cursor: default;
+    }
+
+    .step:hover { background: var(--amber-glow); }
+    .step:nth-child(even) { border-right: none; }
+
+    .step-index {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      margin-top: 0.2rem;
+      flex-shrink: 0;
+    }
+
+    .step-text h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .step-text p {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .components {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .comp-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .comp-item:hover {
+      border-color: var(--amber-dim);
+      transform: translateY(-3px);
+    }
+
+    .comp-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--amber);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+
+    .comp-item:hover::before { transform: scaleY(1); }
+
+    .comp-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .comp-name { font-size: 0.85rem; font-weight: 500; color: var(--white); margin-bottom: 0.3rem; }
+    .comp-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+    .gallery-section {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .gallery-item--wide { grid-column: span 2; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease, filter 0.4s ease;
+      filter: brightness(0.88) saturate(0.9);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1.1);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      color: var(--white);
+      font-size: 0.72rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1.5rem 0.8rem 0.7rem;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.93);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      cursor: pointer;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 82vh;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+
+    .lightbox-caption {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    .lb-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-size: 1.4rem;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      z-index: 10;
+    }
+
+    .lb-nav:hover {
+      background: var(--amber-glow);
+      border-color: var(--amber-dim);
+      color: var(--amber);
+    }
+
+    .lb-nav--prev { left: 2rem; }
+    .lb-nav--next { right: 2rem; }
+
+    @media (max-width: 600px) {
+      .lb-nav--prev { left: 0.5rem; }
+      .lb-nav--next { right: 0.5rem; }
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-size: 1.5rem;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      transition: color 0.2s;
+    }
+
+    .lightbox-close:hover { color: var(--amber); }
+
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item--wide { grid-column: span 2; }
+    }
+
+    .results { background: var(--black); }
+
+    .results-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .result-block {
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      background: var(--panel);
+    }
+
+    .result-block h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .result-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .result-list li {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .result-list li .icon { flex-shrink: 0; margin-top: 0.1rem; }
+    .icon-ok { color: #4caf7d; }
+    .icon-warn { color: var(--amber); }
+
+    .specs-table { width: 100%; border-collapse: collapse; }
+    .specs-table tr { border-bottom: 1px solid var(--border); }
+    .specs-table tr:last-child { border-bottom: none; }
+    .specs-table td { padding: 0.8rem 0; font-size: 0.82rem; }
+    .specs-table td:first-child {
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      width: 40%;
+    }
+    .specs-table td:last-child { color: var(--white); font-weight: 400; }
+
+    footer {
+      padding: 4rem 8vw;
+      border-top: 1px solid var(--border);
+      background: var(--dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      letter-spacing: 0.08em;
+    }
+    .footer-brand span { color: var(--amber); }
+
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--amber); }
+
+    .footer-copy { font-size: 0.75rem; color: var(--muted); width: 100%; }
+
+    @media (max-width: 768px) {
+      .steps-list { grid-template-columns: 1fr; }
+      .step { border-right: none; }
+      .results-inner { grid-template-columns: 1fr; }
+      .hero-dot { display: none; }
+      .hero-beam { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="portfolio-back" href="https://bhaviksapru.github.io" target="_top">← Portfolio</a>
+
+  <section class="hero">
+    <div class="hero-beam"></div>
+    <div class="hero-dot"></div>
+    <div class="hero-label">DIY Build · April 2015</div>
+    <h1>Homemade<span>HD Projector</span></h1>
+    <p class="hero-desc">
+      A fully hand-built HD projector — custom enclosure, precision optics, LCD panel integration, and active thermal management. Built from scratch and capable of projecting full movies in a dark room.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Type</span>
+        <span class="meta-value">LCD Projector</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Build Time</span>
+        <span class="meta-value">DIY</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value" style="color: var(--amber);">Working ✓</span>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span class="scroll-line"></span>
+      Scroll to explore
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="section-tag">Principle</div>
+    <h2 class="section-title">How It Works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h3>Light Source</h3>
+        <p>A high-brightness lamp generates a powerful, focused beam of white light inside the enclosure.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h3>LCD Panel</h3>
+        <p>Light passes through an LCD screen which acts as the "slide" — displaying the image frame by frame.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h3>Projection Lens</h3>
+        <p>A convex lens magnifies the image from the LCD and projects it onto a wall or screen at distance.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <h3>Thermal Control</h3>
+        <p>Filtered intake fans and an exhaust system keep the unit cool, preventing heat damage to components.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="section-tag">Process</div>
+    <h2 class="section-title">Build Process</h2>
+    <div class="steps-list">
+      <div class="step"><span class="step-index">01</span><div class="step-text"><h4>Planning</h4><p>Designed the internal layout and marked slates for precise cutting.</p></div></div>
+      <div class="step"><span class="step-index">02</span><div class="step-text"><h4>Enclosure</h4><p>Cut and assembled the custom housing box from marked slates.</p></div></div>
+      <div class="step"><span class="step-index">03</span><div class="step-text"><h4>Lens Fitting</h4><p>Mounted and positioned the projection lens in the front of the enclosure.</p></div></div>
+      <div class="step"><span class="step-index">04</span><div class="step-text"><h4>Foundation</h4><p>Built the internal structural base to hold all components securely.</p></div></div>
+      <div class="step"><span class="step-index">05</span><div class="step-text"><h4>Electricals &amp; Exhaust</h4><p>Installed wiring, power routing, and the ventilation exhaust outlet.</p></div></div>
+      <div class="step"><span class="step-index">06</span><div class="step-text"><h4>Light Source Wiring</h4><p>Wired up the high-brightness lamp with proper connections and safety.</p></div></div>
+      <div class="step"><span class="step-index">07</span><div class="step-text"><h4>Optics Alignment</h4><p>Fine-tuned the lamp and lens positions for optimal image clarity and brightness.</p></div></div>
+      <div class="step"><span class="step-index">08</span><div class="step-text"><h4>LCD Screen</h4><p>Fitted the display panel into the enclosure in the optical path.</p></div></div>
+      <div class="step"><span class="step-index">09</span><div class="step-text"><h4>Air Intake Filter</h4><p>Added a filtered intake to keep dust out while allowing airflow.</p></div></div>
+      <div class="step"><span class="step-index">10</span><div class="step-text"><h4>Temperature Control</h4><p>Implemented a thermal management system to monitor and manage heat.</p></div></div>
+    </div>
+  </section>
+
+  <section class="components">
+    <div class="section-tag">Materials</div>
+    <h2 class="section-title">Components</h2>
+    <div class="comp-grid">
+      <div class="comp-item"><div class="comp-icon">🔭</div><div class="comp-name">Projection Lens</div><div class="comp-desc">Antique Cooke Triplet, 18" EF (Charles Beseler)</div></div>
+      <div class="comp-item"><div class="comp-icon">🔬</div><div class="comp-name">Field Lens</div><div class="comp-desc">550mm focal length</div></div>
+      <div class="comp-item"><div class="comp-icon">🖥️</div><div class="comp-name">LCD Panel</div><div class="comp-desc">17" Dell, 12ms, 500:1 contrast, 5:4 ratio</div></div>
+      <div class="comp-item"><div class="comp-icon">💡</div><div class="comp-name">Bulb</div><div class="comp-desc">400W metal halide, 5500K, 30,000 lumens, 27mm short arc</div></div>
+      <div class="comp-item"><div class="comp-icon">🪞</div><div class="comp-name">Reflector</div><div class="comp-desc">68mm dia, 17.3mm focal length</div></div>
+      <div class="comp-item"><div class="comp-icon">🔩</div><div class="comp-name">Collimator</div><div class="comp-desc">232mm focal length, 92mm diameter</div></div>
+      <div class="comp-item"><div class="comp-icon">🔵</div><div class="comp-name">Condenser Lens</div><div class="comp-desc">330mm focal length</div></div>
+      <div class="comp-item"><div class="comp-icon">🌡️</div><div class="comp-name">Filters</div><div class="comp-desc">Ultraviolet filter + Infrared filter in optical path</div></div>
+      <div class="comp-item"><div class="comp-icon">🌬️</div><div class="comp-name">Fans</div><div class="comp-desc">PC fans, 120 CFM — exhaust + filtered intake</div></div>
+      <div class="comp-item"><div class="comp-icon">⚡</div><div class="comp-name">Power Circuit</div><div class="comp-desc">120V mains, transformer, capacitor, bulb ignitor</div></div>
+      <div class="comp-item"><div class="comp-icon">📺</div><div class="comp-name">LCD Electronics</div><div class="comp-desc">Dedicated LCD power supply + video controller board</div></div>
+      <div class="comp-item"><div class="comp-icon">🗃️</div><div class="comp-name">Enclosure</div><div class="comp-desc">Custom-cut, hand-assembled, painted housing</div></div>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="section-tag">Build Gallery</div>
+    <h2 class="section-title">Photo Documentation</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDFOv9W-t-io0qKHY2ghQemsvMt0o5K-c5QjZR9HpZCMaYxV3KZ24ZDSWZz2svf26JLipoa6e2nJRsKHxt8qEDO3n9wu9Wk2AHW-3OyR3rTGlUP2PsWYl8FonF_upL3VdtFLSKoyiSP_Qn/s1600/a.jpg" alt="Plan" loading="lazy"/><div class="gallery-caption">Plan</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirNFP2ijplOSCARrkKxLa2eXzPzEujGj3uZrUZ0RWCHAcV3npQRDj-htyfj5JuVl6fXUDM8jvxs2Rc-SHrUKjK9Us2sT6xXgji9m9XEXcyrCr_6btTVteLkv3oUSfRZp1JujUwJdp_Aqcp/s1600/b.JPG" alt="Slates marked for cutting" loading="lazy"/><div class="gallery-caption">Slates Marked for Cutting</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUykUNuRUzmM5Q9LDDW4Ks6uaOqt0BfT729qkuggg7KjiA0OkWPbUcDnwMEURUSrPdK4Tr8Ms9mUb9R5qEu54Ayr_nob32-XsderouG5UuJoo75uCvcxa7a6EEG7NpxtR1BIrq_-HTui73/s1600/c.JPG" alt="Cut" loading="lazy"/><div class="gallery-caption">Cut</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjsn_vqtY3AbPg5hHSHB7P5C7GrevTkrj1X6OF6fluxygqVePV4YBJq8QSXIUjUGpSd-tmutBv8W0BllSLIlj0UZuFqRGYHRNVecQ5M0vLKBaBji5fgrmLReeEsOdIKFXDdWXcNX3bI6vJ/s1600/d.JPG" alt="Lens Fitted" loading="lazy"/><div class="gallery-caption">Lens Fitted</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVRmd4kAsnNynIfRY4TtYqA5hY92LOguhdssbuTX4E9P0DN0TXzSxslJC9wlGIgZg7inka45ofD2QzPspjmGKbA4tkmIDgOowk50_K8-zXlsBEPWQ_DABp5I2XsmFNv3DTc6MNGGJIhxxB/s1600/e.JPG" alt="Foundation" loading="lazy"/><div class="gallery-caption">Foundation</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHa8m0HJTVTx0C0Iell1L97LzMbqfQL4UTQCCeAGUejsblt5tLMehvl8ZI8gO3qmVvIw-4kcM9u4WyLinphNP4h2pb0grCy2SIS37ZobQZwqIuGV4zWYdORRkLBoygZQwrGHUBF4Bf17UI/s1600/f.JPG" alt="Fitting Electricals and Exhaust" loading="lazy"/><div class="gallery-caption">Fitting Electricals &amp; Exhaust</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgQsWjWkt3Axi-lDPNkjLR0witnSfzOnxJPCr0eI1nT10Msm4yxw38yRgQ3wMMxL8efFDbbovTWklD6KI2rDxRdhsihv61mq5oN7feLWB0IN6hv7yqIdMQ7ektrUIJkjEv2Prb0_-sJfDA/s1600/g.JPG" alt="Wiring up the light source" loading="lazy"/><div class="gallery-caption">Wiring up the Light Source</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqv91ubJ0O6Q67CaAQb-O_YvgVb-AjOgQTgqZ1U6xzRstrZQEENCQ9a9Hn77OgOzlc_seqyBCH_0NoFlE_WhB37RuIz2IkIxWo8Mw4Gq6turzVyLC0NbCiNwq-I1wBSOEQnXiP-Lga0BG2/s1600/h.JPG" alt="Aligning Optics" loading="lazy"/><div class="gallery-caption">Aligning Optics</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiREC8Te7BPbqTrQXbYcoaTB0q-To0JugziP3qGk6QwyBBEB6zLn_CcRF4eDH6NijHgfE2xQvaDnkPdv7vIosBzKyF6UywRuVadghc9k7OSVhtthIDuSAyiPeZSvF5XBVZrSdUgEXom36sc/s1600/i.JPG" alt="LCD Screen Fitted" loading="lazy"/><div class="gallery-caption">LCD Screen Fitted</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjruLYgmwVQp0_lTdMMOFeakmBoj50YqRVDS6UedUDuBMH_oSexdgiOlZC76Qy-KdSSCZdOVQ9EDNhsJrmzlstj1y91insAqwNybEsV5MPxUsL15VwM5M53Y_Kz-RTsRqXghB1h5fGPohC1/s1600/i1.JPG" alt="Air Intake Filtered" loading="lazy"/><div class="gallery-caption">Air Intake Filtered</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5owumBLOtJUbCXnbMrMBX6T0YxGJuSfBkNcqzPfFoMP1MHXuQH8nVJBsqJtc5TJDr43_5migxBxeixy-lN02dBXwbsLmv1Gh-HeEcUI_bbqc1rqW8e63a3WDk6WYaWybI2WzSuI2touve/s1600/i2.JPG" alt="Temperature Control" loading="lazy"/><div class="gallery-caption">Temperature Control</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvEK5kt33rqAg-9S_cFeHNldazr4sbL6hMu7R2NvuMwHxLBRIaAvUQYhEBQR4ZApJgW979o-5rko-xk_1gGVjIN2SfFzQymLre1BmnE_QlzKcaiRiPl3Wkyw1l9Qe5XeItfcnOlebtb-A5/s1600/j.JPG" alt="Assembled" loading="lazy"/><div class="gallery-caption">Assembled</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiq5snOxQzNddwDRh_d54vXzWZXXfVmZCXaAOYgOnvli4l-0fUViI_DJFyU_PCDX-VBAP-6X2Fad1H1NqYyZAFw0O_oASQRgCUlT6QmG0gOXKP4eVF4q5dbLBPHkisMRhpSo1JytVyGzn5Q/s1600/IMG_1039.JPG" alt="After Paint" loading="lazy"/><div class="gallery-caption">After Paint</div></div>
+      <div class="gallery-item gallery-item--wide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhryWwQUiKDvrx4pSpBRERR1G5ZFoivE0gYT9T_CBBjcTGz8b9eOVrkIbReWk_Wv1yAnLLqoM443WrozWCjH4JSaQoiidGO_MnwzYp1sfo1cYJzOQM0WFWcwPN7u8eLBoF__gGe8QiqRapq/s1600/l.JPG" alt="Projection Test - Colors" loading="lazy"/><div class="gallery-caption">Projection Test — Colors</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjA6XzWHRIyc-GjNePZwIuzv8HHULjsXPUbCUkfgeg5R239Wd53wvzczJnuBtAVNmkMgjgby67bWIYWL01DztBe7FmUbi5fL4f2cNb4-RbtiaXY1GYbjlSHiBZJ7Z5NzqVLxyvcvvwLcgNr/s1600/m.JPG" alt="Colors" loading="lazy"/><div class="gallery-caption">Colors</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFPnLqxd4ncBCRluD76qZUxCBXbVNEUAM5fEjuq7D38yu4j8He1ZkuEWAIBVihOOpYPxWFm7_O2gSCum0z6fH4mWHe7YeyZHu-CmnrEIn3h2fW_XYyuxTaI6khqM7EFnGtUTGNrk2OzbV-/s1600/n.JPG" alt="Dark Shades" loading="lazy"/><div class="gallery-caption">Dark Shades</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKPf-9vl-duGrP92dKH1mCPs4aYEnQFLihI9SO4UeyF-Yz95LNTCoMkph0zYNpX0iKDHUlcylvdeQa8hT9y-b3tYQxysTMv_ORRxYxv_FbAkOskOXMFP-m9RMGQfCAPMhnUMU3P8uXIzW2/s1600/o.JPG" alt="Daytime with light leakage" loading="lazy"/><div class="gallery-caption">Daytime — Light Leakage</div></div>
+      <div class="gallery-item gallery-item--wide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgSBb2dXuRNv17ylc-ki5ZPc1FOZmwHdeSu7QFOU32ZZ1ngix18UsNL2Fw7q0JAKMu2kEPU6ks96zXr41r_gaznOA1fWhuZGqvIq8U_gq8qT0UHEuqvIidTg0WY5KJx4q2ZoLZJu_S0RgTR/s1600/p.JPG" alt="At night with no ambient light" loading="lazy"/><div class="gallery-caption">Night — No Ambient Light ✓</div></div>
+    </div>
+  </section>
+
+  <section class="results">
+    <div class="section-tag">Outcome</div>
+    <h2 class="section-title">Results</h2>
+    <div class="results-inner">
+      <div class="result-block">
+        <h3>Performance</h3>
+        <ul class="result-list">
+          <li><span class="icon icon-ok">✔</span> Clear projected image in dark conditions</li>
+          <li><span class="icon icon-ok">✔</span> Good color reproduction across the spectrum</li>
+          <li><span class="icon icon-ok">✔</span> Thermal system prevents overheating</li>
+          <li><span class="icon icon-ok">✔</span> Successfully projected full movies</li>
+          <li><span class="icon icon-warn">⚠</span> Light leakage visible in bright daylight — best used in dark rooms</li>
+        </ul>
+      </div>
+      <div class="result-block">
+        <h3>Full Specs</h3>
+        <table class="specs-table">
+          <tr><td>Projection Lens</td><td>18 inch EF Antique Cooke Triplet (Charles Beseler)</td></tr>
+          <tr><td>Field Lens</td><td>550mm focal length</td></tr>
+          <tr><td>LCD Panel</td><td>17" Dell, 12ms response, 500:1 contrast, 5:4 aspect ratio</td></tr>
+          <tr><td>Condenser Lens</td><td>330mm focal length</td></tr>
+          <tr><td>Collimator</td><td>232mm focal length, 92mm diameter</td></tr>
+          <tr><td>Bulb</td><td>400W metal halide, 5500K, 30,000 lumens, short arc 27mm</td></tr>
+          <tr><td>Reflector</td><td>68mm diameter, 17.3mm focal length</td></tr>
+          <tr><td>Fans</td><td>PC fans, 120 CFM</td></tr>
+          <tr><td>Screen Size</td><td>152 inch diagonal, 14 feet away</td></tr>
+          <tr><td>Power</td><td>Mains 120V via transformer</td></tr>
+          <tr><td>Filters</td><td>Ultraviolet filter + Infrared filter</td></tr>
+          <tr><td>Air Intake</td><td>Filtered intake (opposite side from exhaust)</td></tr>
+          <tr><td>LCD Supply</td><td>Dedicated LCD power supply + video controller</td></tr>
+          <tr><td>Ignition</td><td>Bulb ignitor + capacitor circuit</td></tr>
+          <tr><td>Built</td><td>April 2015 — by Bhavik Sapru</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">✕</span>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+    <button class="lb-nav lb-nav--prev" id="lb-prev">&#8592;</button>
+    <img id="lightbox-img" src="" alt=""/>
+    <button class="lb-nav lb-nav--next" id="lb-next">&#8594;</button>
+    <div class="lightbox-caption" id="lightbox-cap"></div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">HD <span>Projector</span></div>
+    <div class="footer-links">
+      <a href="https://fewinsights123.blogspot.com/2015/04/homemade-hd-projector.html" target="_blank">Blog Post</a>
+      <a href="https://github.com/bhaviksapru/projector" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-copy">Built by hand. Documented with care. &copy; 2015 Bhavik Sapru — few insights.</div>
+  </footer>
+
+  <script>
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCap = document.getElementById('lightbox-cap');
+    const lbCounter = document.getElementById('lightbox-counter');
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    let current = 0;
+
+    function openAt(index) {
+      current = index;
+      const img = items[current].querySelector('img');
+      const cap = items[current].querySelector('.gallery-caption');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCap.textContent = cap ? cap.textContent : '';
+      lbCounter.textContent = (current + 1) + ' / ' + items.length;
+      lb.classList.add('open');
+    }
+
+    function prev() { openAt((current - 1 + items.length) % items.length); }
+    function next() { openAt((current + 1) % items.length); }
+
+    items.forEach((item, i) => item.addEventListener('click', () => openAt(i)));
+
+    document.getElementById('lb-prev').addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+    document.getElementById('lb-next').addEventListener('click', (e) => { e.stopPropagation(); next(); });
+    document.getElementById('lightbox-close').addEventListener('click', () => lb.classList.remove('open'));
+
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb) lb.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') lb.classList.remove('open');
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+  </script>
+
+</body>
+</html>
