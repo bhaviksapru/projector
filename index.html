@@ -4,8 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="author" content="Bhavik Sapru">
-  <meta name="description" content="Homemade HD Projector built by Bhavik Sapru — 152 inch DIY LCD projector using a 400W metal halide lamp and antique Cooke triplet lens.">
+  <meta name="description" content="Homemade HD Projector by Bhavik Sapru — 400W metal halide lamp, antique Cooke triplet lens, 152-inch DIY LCD projector built in 2015.">
+  <meta name="robots" content="index, follow">
   <title>Homemade HD Projector — Bhavik Sapru</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         content="https://bhaviksapru.github.io/projector/">
+  <meta property="og:title"       content="Homemade HD Projector — Bhavik Sapru">
+  <meta property="og:description" content="400W metal halide lamp, antique Cooke triplet lens, 17-inch Dell LCD. Projected onto 152 inches at 14 feet.">
+  <meta property="og:site_name"   content="Bhavik Sapru">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="Homemade HD Projector — Bhavik Sapru">
+  <meta name="twitter:description" content="Hand-built HD projector using a 400W metal halide lamp and antique Cooke triplet lens.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://bhaviksapru.github.io/projector/">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Homemade HD Projector",
+    "author": {
+      "@type": "Person",
+      "name": "Bhavik Sapru",
+      "url": "https://bhaviksapru.github.io/"
+    },
+    "description": "A hand-built HD projector using a 400W metal halide lamp, antique Cooke triplet lens, and a 17-inch Dell LCD panel, capable of projecting at 152 inches.",
+    "dateCreated": "2015-04",
+    "url": "https://bhaviksapru.github.io/projector/",
+    "codeRepository": "https://github.com/bhaviksapru/projector"
+  }
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,7 +68,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE TEXTURE ── */
     body::before {
       content: '';
       position: fixed;
@@ -44,7 +78,6 @@
       opacity: 0.6;
     }
 
-    /* ── PORTFOLIO BACK LINK ── */
     .portfolio-back {
       position: fixed;
       top: 1.3rem;
@@ -63,7 +96,6 @@
     }
     .portfolio-back:hover { color: var(--amber); }
 
-    /* ── HERO ── */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -221,7 +253,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── SECTION BASE ── */
     section {
       padding: 8rem 8vw;
       position: relative;
@@ -255,7 +286,6 @@
       margin-bottom: 3rem;
     }
 
-    /* ── HOW IT WORKS ── */
     .how {
       background: var(--dark);
       border-top: 1px solid var(--border);
@@ -278,9 +308,7 @@
       transition: background 0.3s;
     }
 
-    .how-card:hover {
-      background: #1c1f26;
-    }
+    .how-card:hover { background: #1c1f26; }
 
     .how-num {
       font-family: 'Bebas Neue', sans-serif;
@@ -291,9 +319,7 @@
       transition: color 0.3s;
     }
 
-    .how-card:hover .how-num {
-      color: var(--amber-dim);
-    }
+    .how-card:hover .how-num { color: var(--amber-dim); }
 
     .how-card h3 {
       font-size: 0.9rem;
@@ -309,10 +335,7 @@
       color: var(--muted);
     }
 
-    /* ── BUILD STEPS ── */
-    .steps {
-      background: var(--black);
-    }
+    .steps { background: var(--black); }
 
     .steps-list {
       display: grid;
@@ -332,13 +355,8 @@
       cursor: default;
     }
 
-    .step:hover {
-      background: var(--amber-glow);
-    }
-
-    .step:nth-child(even) {
-      border-right: none;
-    }
+    .step:hover { background: var(--amber-glow); }
+    .step:nth-child(even) { border-right: none; }
 
     .step-index {
       font-family: 'DM Mono', monospace;
@@ -362,7 +380,6 @@
       color: var(--muted);
     }
 
-    /* ── COMPONENTS ── */
     .components {
       background: var(--dark);
       border-top: 1px solid var(--border);
@@ -399,29 +416,12 @@
       transition: transform 0.3s;
     }
 
-    .comp-item:hover::before {
-      transform: scaleY(1);
-    }
+    .comp-item:hover::before { transform: scaleY(1); }
 
-    .comp-icon {
-      font-size: 1.5rem;
-      margin-bottom: 0.8rem;
-    }
+    .comp-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .comp-name { font-size: 0.85rem; font-weight: 500; color: var(--white); margin-bottom: 0.3rem; }
+    .comp-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
 
-    .comp-name {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--white);
-      margin-bottom: 0.3rem;
-    }
-
-    .comp-desc {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* ── GALLERY ── */
     .gallery-section {
       background: var(--panel);
       border-top: 1px solid var(--border);
@@ -442,9 +442,7 @@
       cursor: pointer;
     }
 
-    .gallery-item--wide {
-      grid-column: span 2;
-    }
+    .gallery-item--wide { grid-column: span 2; }
 
     .gallery-item img {
       width: 100%;
@@ -476,9 +474,7 @@
       transition: transform 0.3s ease;
     }
 
-    .gallery-item:hover .gallery-caption {
-      transform: translateY(0);
-    }
+    .gallery-item:hover .gallery-caption { transform: translateY(0); }
 
     .lightbox {
       display: none;
@@ -571,10 +567,7 @@
       .gallery-item--wide { grid-column: span 2; }
     }
 
-    /* ── RESULTS ── */
-    .results {
-      background: var(--black);
-    }
+    .results { background: var(--black); }
 
     .results-inner {
       display: grid;
@@ -613,32 +606,14 @@
       align-items: flex-start;
     }
 
-    .result-list li .icon {
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-
+    .result-list li .icon { flex-shrink: 0; margin-top: 0.1rem; }
     .icon-ok { color: #4caf7d; }
     .icon-warn { color: var(--amber); }
 
-    .specs-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .specs-table tr {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .specs-table tr:last-child {
-      border-bottom: none;
-    }
-
-    .specs-table td {
-      padding: 0.8rem 0;
-      font-size: 0.82rem;
-    }
-
+    .specs-table { width: 100%; border-collapse: collapse; }
+    .specs-table tr { border-bottom: 1px solid var(--border); }
+    .specs-table tr:last-child { border-bottom: none; }
+    .specs-table td { padding: 0.8rem 0; font-size: 0.82rem; }
     .specs-table td:first-child {
       color: var(--muted);
       font-family: 'DM Mono', monospace;
@@ -647,13 +622,8 @@
       text-transform: uppercase;
       width: 40%;
     }
+    .specs-table td:last-child { color: var(--white); font-weight: 400; }
 
-    .specs-table td:last-child {
-      color: var(--white);
-      font-weight: 400;
-    }
-
-    /* ── FOOTER ── */
     footer {
       padding: 4rem 8vw;
       border-top: 1px solid var(--border);
@@ -671,13 +641,9 @@
       color: var(--white);
       letter-spacing: 0.08em;
     }
-
     .footer-brand span { color: var(--amber); }
 
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
+    .footer-links { display: flex; gap: 1.5rem; }
 
     .footer-links a {
       font-family: 'DM Mono', monospace;
@@ -688,16 +654,10 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-
     .footer-links a:hover { color: var(--amber); }
 
-    .footer-copy {
-      font-size: 0.75rem;
-      color: var(--muted);
-      width: 100%;
-    }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); width: 100%; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .steps-list { grid-template-columns: 1fr; }
       .step { border-right: none; }
@@ -709,10 +669,8 @@
 </head>
 <body>
 
-  <!-- PORTFOLIO BACK LINK — works in iframe (target="_top") and direct visit -->
   <a class="portfolio-back" href="https://bhaviksapru.github.io" target="_top">← Portfolio</a>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-beam"></div>
     <div class="hero-dot"></div>
@@ -741,7 +699,6 @@
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
   <section class="how">
     <div class="section-tag">Principle</div>
     <h2 class="section-title">How It Works</h2>
@@ -769,7 +726,6 @@
     </div>
   </section>
 
-  <!-- BUILD STEPS -->
   <section class="steps">
     <div class="section-tag">Process</div>
     <h2 class="section-title">Build Process</h2>
@@ -778,7 +734,7 @@
       <div class="step"><span class="step-index">02</span><div class="step-text"><h4>Enclosure</h4><p>Cut and assembled the custom housing box from marked slates.</p></div></div>
       <div class="step"><span class="step-index">03</span><div class="step-text"><h4>Lens Fitting</h4><p>Mounted and positioned the projection lens in the front of the enclosure.</p></div></div>
       <div class="step"><span class="step-index">04</span><div class="step-text"><h4>Foundation</h4><p>Built the internal structural base to hold all components securely.</p></div></div>
-      <div class="step"><span class="step-index">05</span><div class="step-text"><h4>Electricals & Exhaust</h4><p>Installed wiring, power routing, and the ventilation exhaust outlet.</p></div></div>
+      <div class="step"><span class="step-index">05</span><div class="step-text"><h4>Electricals &amp; Exhaust</h4><p>Installed wiring, power routing, and the ventilation exhaust outlet.</p></div></div>
       <div class="step"><span class="step-index">06</span><div class="step-text"><h4>Light Source Wiring</h4><p>Wired up the high-brightness lamp with proper connections and safety.</p></div></div>
       <div class="step"><span class="step-index">07</span><div class="step-text"><h4>Optics Alignment</h4><p>Fine-tuned the lamp and lens positions for optimal image clarity and brightness.</p></div></div>
       <div class="step"><span class="step-index">08</span><div class="step-text"><h4>LCD Screen</h4><p>Fitted the display panel into the enclosure in the optical path.</p></div></div>
@@ -787,7 +743,6 @@
     </div>
   </section>
 
-  <!-- COMPONENTS -->
   <section class="components">
     <div class="section-tag">Materials</div>
     <h2 class="section-title">Components</h2>
@@ -807,7 +762,6 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
   <section class="gallery-section">
     <div class="section-tag">Build Gallery</div>
     <h2 class="section-title">Photo Documentation</h2>
@@ -819,21 +773,20 @@
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVRmd4kAsnNynIfRY4TtYqA5hY92LOguhdssbuTX4E9P0DN0TXzSxslJC9wlGIgZg7inka45ofD2QzPspjmGKbA4tkmIDgOowk50_K8-zXlsBEPWQ_DABp5I2XsmFNv3DTc6MNGGJIhxxB/s1600/e.JPG" alt="Foundation" loading="lazy"/><div class="gallery-caption">Foundation</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHa8m0HJTVTx0C0Iell1L97LzMbqfQL4UTQCCeAGUejsblt5tLMehvl8ZI8gO3qmVvIw-4kcM9u4WyLinphNP4h2pb0grCy2SIS37ZobQZwqIuGV4zWYdORRkLBoygZQwrGHUBF4Bf17UI/s1600/f.JPG" alt="Fitting Electricals and Exhaust" loading="lazy"/><div class="gallery-caption">Fitting Electricals &amp; Exhaust</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgQsWjWkt3Axi-lDPNkjLR0witnSfzOnxJPCr0eI1nT10Msm4yxw38yRgQ3wMMxL8efFDbbovTWklD6KI2rDxRdhsihv61mq5oN7feLWB0IN6hv7yqIdMQ7ektrUIJkjEv2Prb0_-sJfDA/s1600/g.JPG" alt="Wiring up the light source" loading="lazy"/><div class="gallery-caption">Wiring up the Light Source</div></div>
-      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqv91ubJ0O6Q67CaAQb-O_YvgVb-AjOgQTgqZ1U6xzRstrZQEENCQ9a9Hn77OgOzlc_seqyBCH_0NoFlE_WhB37RuIz2IkIxWo8Mw4Gq6turzVyLC0NbCiNwq-I1wBSOEQnXiP-Lga0BG2/s1600/h.JPG" alt="Aligning Optics" loading="lazy"/><div class="gallery-caption">Aligning Optics</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqv91ubJ0O6Q67CaAQb-O_YvgVb-AjOgQTgqZ1U6xzRstrZQEENCQ9a9Hn77OgOzlc_seqyBGH_0NoFlE_WhB37RuIz2IkIxWo8Mw4Gq6turzVyLC0NbCiNwq-I1wBSOEQnXiP-Lga0BG2/s1600/h.JPG" alt="Aligning Optics" loading="lazy"/><div class="gallery-caption">Aligning Optics</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiREC8Te7BPbqTrQXbYcoaTB0q-To0JugziP3qGk6QwyBBEB6zLn_CcRF4eDH6NijHgfE2xQvaDnkPdv7vIosBzKyF6UywRuVadghc9k7OSVhtthIDuSAyiPeZSvF5XBVZrSdUgEXom36sc/s1600/i.JPG" alt="LCD Screen Fitted" loading="lazy"/><div class="gallery-caption">LCD Screen Fitted</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjruLYgmwVQp0_lTdMMOFeakmBoj50YqRVDS6UedUDuBMH_oSexdgiOlZC76Qy-KdSSCZdOVQ9EDNhsJrmzlstj1y91insAqwNybEsV5MPxUsL15VwM5M53Y_Kz-RTsRqXghB1h5fGPohC1/s1600/i1.JPG" alt="Air Intake Filtered" loading="lazy"/><div class="gallery-caption">Air Intake Filtered</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5owumBLOtJUbCXnbMrMBX6T0YxGJuSfBkNcqzPfFoMP1MHXuQH8nVJBsqJtc5TJDr43_5migxBxeixy-lN02dBXwbsLmv1Gh-HeEcUI_bbqc1rqW8e63a3WDk6WYaWybI2WzSuI2touve/s1600/i2.JPG" alt="Temperature Control" loading="lazy"/><div class="gallery-caption">Temperature Control</div></div>
-      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvEK5kt33rqAg-9S_cFeHNldazr4sbL6hMu7R2NvuMwHxLBRIaAvUQYhEBQR4ZApJgW979o-5rko-xk_1gGVjIN2SfFzQymLre1BmnE_QlzKcaiRiPl3Wkyw1l9Qe5XeItfcnOlebtb-A5/s1600/j.JPG" alt="Assembled" loading="lazy"/><div class="gallery-caption">Assembled</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvEK5kt33rqAg-9S_cFeHNldazr4sbL6hMu7R2NvuMwHxLBRIaAvUQYhEBQR4ZApJgW979o-5rko-9S_cFeHNldazr4sbL6hMu7R2NvuMwHxLBRIaAvUQYhEBQR4ZApJgW979o-5rko-xk_1gGVjIN2SfFzQymLre1BmnE_QlzKcaiRiPl3Wkyw1l9Qe5XeItfcnOlebtb-A5/s1600/j.JPG" alt="Assembled" loading="lazy"/><div class="gallery-caption">Assembled</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiq5snOxQzNddwDRh_d54vXzWZXXfVmZCXaAOYgOnvli4l-0fUViI_DJFyU_PCDX-VBAP-6X2Fad1H1NqYyZAFw0O_oASQRgCUlT6QmG0gOXKP4eVF4q5dbLBPHkisMRhpSo1JytVyGzn5Q/s1600/IMG_1039.JPG" alt="After Paint" loading="lazy"/><div class="gallery-caption">After Paint</div></div>
       <div class="gallery-item gallery-item--wide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhryWwQUiKDvrx4pSpBRERR1G5ZFoivE0gYT9T_CBBjcTGz8b9eOVrkIbReWk_Wv1yAnLLqoM443WrozWCjH4JSaQoiidGO_MnwzYp1sfo1cYJzOQM0WFWcwPN7u8eLBoF__gGe8QiqRapq/s1600/l.JPG" alt="Projection Test - Colors" loading="lazy"/><div class="gallery-caption">Projection Test — Colors</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjA6XzWHRIyc-GjNePZwIuzv8HHULjsXPUbCUkfgeg5R239Wd53wvzczJnuBtAVNmkMgjgby67bWIYWL01DztBe7FmUbi5fL4f2cNb4-RbtiaXY1GYbjlSHiBZJ7Z5NzqVLxyvcvvwLcgNr/s1600/m.JPG" alt="Colors" loading="lazy"/><div class="gallery-caption">Colors</div></div>
-      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFPnLqxd4ncBCRluD76qZUxCBXbVNEUAM5fEjuq7D38yu4j8He1ZkuEWAIBVihOOpYPxWFm7_O2gSCum0z6fH4mWHe7YeyZHu-CmnrEIn3h2fW_XYyuxTaI6khqM7EFnGtUTGNrk2OzbV-/s1600/n.JPG" alt="Dark Shades" loading="lazy"/><div class="gallery-caption">Dark Shades</div></div>
+      <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFPnLqxd4ncBCRluD76qZUxCBXbVThJN4AME5fEjuq7D38yu4j8He1ZkuEWAIBVihOOpYPxWFm7_O2gSCum0z6fH4mWHe7YeyZHu-CmnrEIn3h2fW_XYyuxTaI6khqM7EFnGtUTGNrk2OzbV-/s1600/n.JPG" alt="Dark Shades" loading="lazy"/><div class="gallery-caption">Dark Shades</div></div>
       <div class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKPf-9vl-duGrP92dKH1mCPs4aYEnQFLihI9SO4UeyF-Yz95LNTCoMkph0zYNpX0iKDHUlcylvdeQa8hT9y-b3tYQxysTMv_ORRxYxv_FbAkOskOXMFP-m9RMGQfCAPMhnUMU3P8uXIzW2/s1600/o.JPG" alt="Daytime with light leakage" loading="lazy"/><div class="gallery-caption">Daytime — Light Leakage</div></div>
       <div class="gallery-item gallery-item--wide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgSBb2dXuRNv17ylc-ki5ZPc1FOZmwHdeSu7QFOU32ZZ1ngix18UsNL2Fw7q0JAKMu2kEPU6ks96zXr41r_gaznOA1fWhuZGqvIq8U_gq8qT0UHEuqvIidTg0WY5KJx4q2ZoLZJu_S0RgTR/s1600/p.JPG" alt="At night with no ambient light" loading="lazy"/><div class="gallery-caption">Night — No Ambient Light ✓</div></div>
     </div>
   </section>
 
-  <!-- RESULTS -->
   <section class="results">
     <div class="section-tag">Outcome</div>
     <h2 class="section-title">Results</h2>
@@ -871,7 +824,6 @@
     </div>
   </section>
 
-  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
     <span class="lightbox-close" id="lightbox-close">✕</span>
     <div class="lightbox-counter" id="lightbox-counter"></div>
@@ -881,14 +833,13 @@
     <div class="lightbox-caption" id="lightbox-cap"></div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-brand">HD <span>Projector</span></div>
     <div class="footer-links">
       <a href="https://fewinsights123.blogspot.com/2015/04/homemade-hd-projector.html" target="_blank">Blog Post</a>
       <a href="https://github.com/bhaviksapru/projector" target="_blank">GitHub</a>
     </div>
-    <div class="footer-copy">Built by hand. Documented with care. &copy; 2015 B — few insights.</div>
+    <div class="footer-copy">Built by hand. Documented with care. &copy; 2015 Bhavik Sapru — few insights.</div>
   </footer>
 
   <script>
